@@ -14,9 +14,9 @@ const handleUserRegistration = async (req, res) => {
   var imageLinkAlternative =
     "https://mboka.co.ke/wp-content/uploads/2023/06/edfb3f122492c75396988b1161852b0e.png";
 
-    //URL for emal verific= BaseURl/verifyEmail/:EMAIL_ID}
-  var urlVerificationLink = `${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
-
+    //URL for emal verific= PARENT_URL/BaseURl/verifyEmail/:EMAIL_ID}
+  var urlVerificationLink = `${process.env.PARENT_URL}/${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
+  
   var sent_message = `user has been registered successfully,
   an email verification message has been sent to your email ${req.body.email} 
   click the link provided to verify your account. Email reception time is within 5 minutes.
@@ -65,7 +65,6 @@ const handleUserRegistration = async (req, res) => {
             <div style="width: 100%;  text-align: center;margin-bottom: 15px">
             <div style="display: inline; text-align: left;">
             <a href="${urlVerificationLink}" style="text-decoration: none; border: 1px solid lightgrey; padding: 10px;font-weight: bold; color: darkblue;font-size: large; border-radius: 1rem; box-shadow: 0px 0px 1px;">click here to verify account</a>
-
             </div>
         </div>
 
@@ -144,8 +143,8 @@ const handleGetJobs = async (req, res) => {
   //extract key value from the url
   const key = req.params.API_KEY;
   //checking the user key from the users collection if present
-  const error_statement = `the key provided is invalid.Please verify the Email Account in order to
-      to obtain an API_KEY in order to access jobAPI254 service`;
+  const error_statement = `the key provided is invalid.Please verify the Email Account in order
+      to own an API_KEY and make use of jobAPI254 services`;
 
   const result = await User.findOne({ key });
 
