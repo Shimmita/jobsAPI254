@@ -143,7 +143,7 @@ const handleGetJobs = async (req, res) => {
   //extract key value from the url
   const key = req.params.API_KEY;
   //checking the user key from the users collection if present
-  const error_statement = `the key provided is invalid.Please verify the Email Account in order
+  const error_statement = `key is invalid please verify your email  in order
       to own an API_KEY and make use of jobAPI254 services`;
 
   const result = await User.findOne({ key });

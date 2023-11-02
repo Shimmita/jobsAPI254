@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const dotenv = require("dotenv/config");
+require("dotenv/config");
 const JobSchema = require("../model/Job");
 const User = require("../model/User");
 
