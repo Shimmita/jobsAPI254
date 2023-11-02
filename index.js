@@ -9,7 +9,7 @@ const app = express();
 const cors = require("cors");
 
 //comment on deployment:used for testing
- const { testRoute } = require("./routesTest/DataRoute");
+ //const { testRoute } = require("./routesTest/DataRoute");
 //
 app.use(bodyParser.json());
 app.use(cors());
@@ -25,7 +25,7 @@ app.listen(PORT || process.env.PORT, process.env.BASE_IP_ADDRESS, () => {
 
 //connecting to mongoDB
 mongoose
-  .connect(process.env.CONNECTION_STRING_CLOUD)
+  .connect(process.env.CONNECTION_STRING_LOCAL)
   .then((res) => {
     console.log("connected to mongoDB database");
   })
@@ -44,7 +44,7 @@ app.use(process.env.BASE_ROUTE, adminRoute);
 
 
 //ROUTE TESTING and can be removed safely. comment on  pushing /deployment git
-app.use(process.env.BASE_ROUTE, testRoute);
+//app.use(process.env.BASE_ROUTE, testRoute);
 
 //handle url/ page not found error 404. the provided url didnt match any known url
 app.use((req, res) => {

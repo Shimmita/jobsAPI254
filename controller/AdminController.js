@@ -28,7 +28,7 @@ const handlePostJobs = async (req, res) => {
       //email provided is valid. proceed API_KEY validation
       if (result.key == key) {
         //
-        
+
         /* SOLVE BUG PRESENT LINK 1 NAND LINK 4
          */
 
@@ -38,7 +38,7 @@ const handlePostJobs = async (req, res) => {
 
         try {
           //link1
-          /* 
+
           console.log("begin link 1");
 
           await page.goto(process.env.LINK_SRC_1, {
@@ -57,7 +57,7 @@ const handlePostJobs = async (req, res) => {
           );
 
           console.log("end data link 1");
- */
+
           //add data of 1
 
           //link2
@@ -78,12 +78,12 @@ const handlePostJobs = async (req, res) => {
             )
           );
 
-          /* console.log("end data link 2");
+          console.log("end data link 2");
 
           //merging data 1 and data 2
           const first_state = data_1.concat(data_2);
           console.log("first merge successful");
- */
+
           //link 3
           console.log("begin link 3");
 
@@ -106,13 +106,13 @@ const handlePostJobs = async (req, res) => {
           console.log("end data link 3");
 
           //second merge of the data
-          //const second_state = first_state.concat(data_3);
-          
-          const second_state = data_2.concat(data_3);
-          console.log("second merge successfull");
+          const second_state = first_state.concat(data_3);
+
+          /* const second_state = data_2.concat(data_3);
+          console.log("second merge successfull"); */
 
           //link4
-        /*   console.log("begin link 4");
+          console.log("begin link 4");
 
           await page.goto(process.env.LINK_SRC_4, {
             waitUntil: "load",
@@ -133,8 +133,7 @@ const handlePostJobs = async (req, res) => {
           console.log("end data link 4");
 
           //third merge of the data
-          const third_state = second_state.concat(data_4); */
-
+          const third_state = second_state.concat(data_4);
 
           console.log("third merge successful");
 
@@ -172,9 +171,9 @@ const handlePostJobs = async (req, res) => {
           console.log("end data link 5");
 
           //fourth maerge
-         // const fourth_state = third_state.concat(data_5);
+          const fourth_state = third_state.concat(data_5);
 
-          const fourth_state = second_state.concat(data_5);
+          /*  const fourth_state = second_state.concat(data_5); */
           //
           console.log("fourth merge successful");
 
@@ -252,6 +251,29 @@ const handlePostJobs = async (req, res) => {
           // merging the data
           const seventh_state = sixth_state.concat(data_8);
           console.log("seventh merge successfull ");
+
+          /* //link 9
+          console.log("begin link 9");
+
+          await page.goto(process.env.LINK_SRC_9, {
+            waitUntil: "load",
+            timeout: 0,
+          });
+          const data_9 = await page.evaluate(() =>
+            Array.from(
+              document.querySelectorAll(".jobs-search__results-list li"),
+              (element) => ({
+                title: element.querySelector("span").innerText,
+                organisation: element.querySelector("h4 a").innerText,
+                link: element.querySelector("a").href,
+              })
+            )
+          );
+
+          console.log("end data link 9");
+
+          //merging the data
+          const eight_state = seventh_state.concat(data_9); */
 
           //before saving the data into the database, verify that the data is not null
           if (seventh_state.length > 1) {
