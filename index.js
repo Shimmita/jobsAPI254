@@ -44,7 +44,7 @@ app.use(process.env.BASE_ROUTE, adminRoute);
 
 
 //ROUTE TESTING and can be removed safely. comment on  pushing /deployment git
-app.use(process.env.BASE_ROUTE, testRoute);
+//app.use(process.env.BASE_ROUTE, testRoute);
 
 //handle url/ page not found error 404. the provided url didnt match any known url
 app.use((req, res) => {
