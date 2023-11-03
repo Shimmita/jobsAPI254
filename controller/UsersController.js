@@ -15,7 +15,7 @@ const handleUserRegistration = async (req, res) => {
     "https://mboka.co.ke/wp-content/uploads/2023/06/edfb3f122492c75396988b1161852b0e.png";
 
     //URL for emal verific= PARENT_URL/BaseURl/verifyEmail/:EMAIL_ID}
-  var urlVerificationLink = `${process.env.PARENT_URL}/${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
+  var urlVerificationLink = `${process.env.PARENT_URL}${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
   
   var sent_message = `user has been registered successfully,
   an email verification message has been sent to your email ${req.body.email} 

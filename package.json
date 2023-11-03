@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -21,8 +22,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
     "nodejs-nodemailer-outlook": "^1.2.4",
-    "nodemailer": "^6.9.7",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
     "nodemon": "^3.0.1",
-    "puppeteer": "^2.1.1"
+    "puppeteer": "^21.4.1"
   }
 }
