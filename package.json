@@ -20,6 +20,7 @@
     "mongoose": "^7.6.3",
     "nodejs-nodemailer-outlook": "^1.2.4",
     "nodemailer": "^6.9.7",
+    "puppeteer": "^2.1.1",
     "validator": "^13.11.0"
   },
   "devDependencies": {

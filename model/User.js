@@ -3,64 +3,70 @@ const bcrypt = require("bcrypt");
 const { isURL } = require("validator");
 
 //creating a usr schema  firstname,lastname,email,key
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "full name required!"],
+      uppercase: true,
+    },
+    phone: {
+      type: String,
+      required: [true, "phone number required!"],
+    },
 
-  github: {
-    type: String,
-    required: "true",
-    validate: [isURL, "enter a valid github profile url link!"],
-  },
-  linkedin: {
-    type: String,
-    required: true,
-    validate: [isURL, "enter a valid linkedin profile url link!"],
+    github: {
+      type: String,
+      required: [true, "github profile url required!"],
+      validate: [isURL, "enter a valid github profile url link!"],
+      lowercase: true,
+    },
+    linkedin: {
+      type: String,
+      required: [true, "linkedin profile url required!"],
+      validate: [isURL, "enter a valid linkedin profile url link!"],
+      lowercase: true,
+    },
 
-  },
+    email: {
+      type: String,
+      lowercase: true,
+      required: [true, "email required!"],
+      unique: [true, "email already used!"],
+      validate: [
+        emailVailidator,
+        "Email format provided is not valid, please enter a correct email address",
+      ],
+    },
+    password: {
+      type: String,
+      required: [true, "password  required!"],
+    },
 
-  email: {
-    type: String,
-    required: true,
-    unique: [true, "email already used!"],
-    validate: [
-      emailVailidator,
-      "Email format provided is not valid, please enter a correct email address",
-    ],
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  key: {
-    type: String,
-    default: "0",
-  },
-  token: {
-    type: String,
-    default: "0",
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
+    key: {
+      type: String,
+      default: "0",
+    },
+    token: {
+      type: String,
+      default: "0",
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
 
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-});
+  { timestamps: true }
+);
 
 //return a formatted date
 UserSchema.virtual("createdAtt").get(function () {
