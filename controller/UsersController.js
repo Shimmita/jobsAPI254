@@ -9,6 +9,9 @@ const User = require("../model/User");
 const handleUserRegistration = async (req, res) => {
   //saving to the database
   var recipientEmail = req.body.email;
+
+  console.log(recipientEmail)
+
   var imageLogoLink =
     "https://digitallearning.eletsonline.com/wp-content/uploads/2016/10/7-million-jobs-can-disappear-by-2050-Study.jpg";
   var imageLinkAlternative =
@@ -98,10 +101,13 @@ const handleUserRegistration = async (req, res) => {
   //sending the email verification message to the recipient
   nodemailerTransport.sendMail(nodemailerOptions, async (error, info) => {
     if (error) {
-      console.log("error " + error.message);
+      console.log("error nodemailer " + error.message);
       res.status(400).json({
         message: `error occured ${error.message}`,
-      });
+      }
+  
+      );
+      return;
     } else {
       //log success status from nodemailer
       console.log(`email sent ${info.response}`);
@@ -133,6 +139,7 @@ const handleUserRegistration = async (req, res) => {
             });
         });
 
+        return;
       //
     }
   });
