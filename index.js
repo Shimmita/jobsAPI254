@@ -7,6 +7,7 @@ const { adminRoute } = require("./routes/AdminRoute");
 const { emailVerificationRoute } = require("./routes/EmailVerRoute");
 const app = express();
 const cors = require("cors");
+require('punycode')
 
 //comment on deployment:used for testing
  //const { testRoute } = require("./routesTest/DataRoute");

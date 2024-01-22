@@ -10,7 +10,6 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -24,6 +23,7 @@
     "mongoose": "^7.6.3",
     "nodejs-nodemailer-outlook": "^1.2.4",
     "nodemailer": "^6.9.7",
+    "punycode": "^2.3.1",
     "puppeteer": "^2.1.1",
     "validator": "^13.11.0"
   },
