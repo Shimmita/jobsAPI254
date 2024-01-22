@@ -118,7 +118,7 @@ const handleUserRegistration = async (req, res) => {
             message: sent_message,
           });
         })
-        .catch((error) => {
+        .catch((error_data) => {
           if (error_data.includes("email")) {
             res.status(400).json({
               message: `email ${recipientEmail} already in use try onother email!`,
