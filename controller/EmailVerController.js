@@ -5,7 +5,6 @@ require("dotenv/config");
 const handleEmailVerification = async (req, res) => {
   //extracting the email embedded in the request
   const email = req.params.EMAIL_ID;
-  console.log(email);
   //check if the email conforms to the email standards
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const status = emailRegex.test(email);
@@ -35,7 +34,7 @@ const handleEmailVerification = async (req, res) => {
         if (user.isVerified) {
           //deny API KEY generation since user already have one
           const api_key_sent_message =
-            "You already have an API_KEY. An email wit your API KEY has been sent kindly check your mail inbox or spam folder to locate it within 5 minutes time.";
+            "You already have an API_KEY. An email with your API KEY has been sent kindly check your inbox or spam folder within 5 minutes";
 
           const keyExistsHTML = `
   <div style="padding: 10dp; border: 1px solid white; box-shadow: 0px 0px 1px;background-color: whitesmoke;">

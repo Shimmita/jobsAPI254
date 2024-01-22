@@ -3,23 +3,22 @@ const JobSchema = require("../model/Job");
 const UserSchema = require("../model/User");
 const nodemailer = require("nodemailer");
 const User = require("../model/User");
+const { emailVerificationRoute } = require("../routes/EmailVerRoute");
 
 //const nodemailer = require("nodejs-nodemailer-outlook");
 //POST User registration Handler
 const handleUserRegistration = async (req, res) => {
   //saving to the database
-  var recipientEmail = req.body.email;
-
-  console.log(recipientEmail)
+  const recipientEmail = req.body.email;
 
   var imageLogoLink =
     "https://digitallearning.eletsonline.com/wp-content/uploads/2016/10/7-million-jobs-can-disappear-by-2050-Study.jpg";
   var imageLinkAlternative =
     "https://mboka.co.ke/wp-content/uploads/2023/06/edfb3f122492c75396988b1161852b0e.png";
 
-    //URL for emal verific= PARENT_URL/BaseURl/verifyEmail/:EMAIL_ID}
+  //URL for emal verific= PARENT_URL/BaseURl/verifyEmail/:EMAIL_ID}
   var urlVerificationLink = `${process.env.PARENT_URL}${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
-  
+
   var sent_message = `user has been registered successfully,
   an email verification message has been sent to your email ${req.body.email} 
   click the link provided to verify your account. Email reception time is within 5 minutes.
@@ -104,10 +103,7 @@ const handleUserRegistration = async (req, res) => {
       console.log("error nodemailer " + error.message);
       res.status(400).json({
         message: `error occured ${error.message}`,
-      }
-  
-      );
-      return;
+      });
     } else {
       //log success status from nodemailer
       console.log(`email sent ${info.response}`);
@@ -123,23 +119,32 @@ const handleUserRegistration = async (req, res) => {
           });
         })
         .catch((error) => {
-          const error_data = `${error.message}`;
           if (error_data.includes("email")) {
             res.status(400).json({
-              message: "email already taken, use a different email address!",
+              message: `email ${recipientEmail} already in use try onother email!`,
             });
           } else if (error_data.includes("name")) {
             res.status(400).json({
               message:
                 "a user with the same name already exists, use a different name!",
             });
+          } else if (error_data.includes("phone")) {
+            res.status(400).json({
+              message: "phone number already exists, use a different one!",
+            });
+          } else if (error_data.includes("github")) {
+            res.status(400).json({
+              message: "github account already exists, use a different one!",
+            });
+          } else if (error_data.includes("linkedin")) {
+            res.status(400).json({
+              message: "linkedin account already exists, use a different one!",
+            });
           } else
             res.status(400).json({
               message: error.message,
             });
         });
-
-        return;
       //
     }
   });
@@ -150,8 +155,7 @@ const handleGetJobs = async (req, res) => {
   //extract key value from the url
   const key = req.params.API_KEY;
   //checking the user key from the users collection if present
-  const error_statement = `key is invalid please verify your email  in order
-      to own an API_KEY and make use of jobAPI254 services`;
+  const error_statement = `key is invalid please verify your email to use our services!`;
 
   const result = await User.findOne({ key });
 

@@ -7,24 +7,28 @@ const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      unique: true,
       required: [true, "full name required!"],
-      uppercase: true,
+      lowercase: true,
     },
     phone: {
       type: String,
+      unique: true,
       required: [true, "phone number required!"],
     },
 
     github: {
       type: String,
-      required: [true, "github profile url required!"],
-      validate: [isURL, "enter a valid github profile url link!"],
+      unique: true,
+      required: [true, "github profile link required!"],
+      validate: [isURL, "enter a valid github profile link!"],
       lowercase: true,
     },
     linkedin: {
       type: String,
-      required: [true, "linkedin profile url required!"],
-      validate: [isURL, "enter a valid linkedin profile url link!"],
+      unique: true,
+      required: [true, "linkedin profile link required!"],
+      validate: [isURL, "enter a valid linkedin profile link!"],
       lowercase: true,
     },
 
@@ -59,19 +63,9 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );
-
-//return a formatted date
-UserSchema.virtual("createdAtt").get(function () {
-  return this.createdAt.toDateString();
-});
 
 //hash the password before saving the user details
 UserSchema.pre("save", async function (next) {
