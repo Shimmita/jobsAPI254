@@ -115,30 +115,36 @@ const handleUserRegistration = async (req, res) => {
         });
         console.log("user saved successfully:\n" + user);
       } catch (error) {
-        const error_data = `${error.message}`;
+        var error_data = `${error.message}`;
         if (error_data.includes("email")) {
           await res.status(400).json({
+            data: user,
             message: `email ${recipientEmail} already in use try onother email!`,
           });
         } else if (error_data.includes("name")) {
           await res.status(400).json({
+            data: user,
             message:
               "a user with the same name already exists, use a different name!",
           });
         } else if (error_data.includes("phone")) {
           await res.status(400).json({
+            data: user,
             message: "phone number already exists, use a different one!",
           });
         } else if (error_data.includes("github")) {
           await res.status(400).json({
+            data: user,
             message: "github account already exists, use a different one!",
           });
         } else if (error_data.includes("linkedin")) {
           await res.status(400).json({
+            data: user,
             message: "linkedin account already exists, use a different one!",
           });
         } else
           await res.status(400).json({
+            data: user,
             message: error.message,
           });
       }
@@ -160,19 +166,20 @@ const handleGetJobs = async (req, res) => {
     //key is invalid since result is undefined/ null by the result object
     console.log(error_statement);
     res.status(400).json({
+      data:{},
       message: error_statement,
     });
   } else {
     if (result.key === key) {
       //key valid enable user viewing the data
       const data = await JobSchema.find({});
-      res.status(200).json({
+      await res.status(200).json({
         message: "ok",
         data: data,
       });
     } else {
       //the key invalid
-      res.status(400).json({
+      await res.status(400).json({
         message: error_statement,
       });
     }
