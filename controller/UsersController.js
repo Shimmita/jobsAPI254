@@ -20,10 +20,10 @@ const handleUserRegistration = async (req, res) => {
   //URL for emal verific= PARENT_URL/BaseURl/verifyEmail/:EMAIL_ID}
   var urlVerificationLink = `${process.env.PARENT_URL}${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
 
-  var sent_message = `user has been registered successfully,
-  an email verification message has been sent to your email ${req.body.email} 
-  click the link provided to verify your account. Email reception time is within 5 minutes.
-  Check in the email spam folder incase the email is not found in the inbox. YOU MUST VERIFY THE EMAIL IN ORDER TO USE THE API`;
+  var sent_message = `User registration successful
+  email verification message sent to ${req.body.email} 
+  click verify button to verify your account.
+  Check in the email spam folder incase the email is not found in the inbox.`;
 
   var html = `
       <div style="display: flex;justify-content: center;align-items: center;">
@@ -33,28 +33,25 @@ const handleUserRegistration = async (req, res) => {
             </div>
             <h3 style="text-decoration: underline;text-align: center; ">Email Verification Steps for JobsAPI254</h3>
             <ol>
-                <li>Verify your account to use <span style="font-weight: bold;">JobsAPI254</span> services.</li>
-                <li>Upon verification an email containing API_KEY will be sent back to this email and it will contain a full documentation on how to use the <span style="font-weight: bold;">jobsAPI254</span> or integrating it within your Mobile Application or Web Application. </li>
-                <li>Check in the spam folder incase the email was not received in the inbox after 5 minutes.</li>
-                <li>For Mobile Applications it's Applicable on: <ul>
+                <li>Verify your account to use <span style="font-weight: bold;">JobWave</span> services.</li>
+                <li>Upon verification an email containing a <span style="font-weight: bold;"> UNIQUE KEY</span> will be sent back to this email and it will contain a full documentation on how to use the <span style="font-weight: bold;">KEY for authenitication and accessing JobWave services.</span> By having the key you can also integrate our API into your Mobile Application or Web Application. </li>
+                <li>For Mobile Applications integration it's Applicable on: <ul>
                     <li>Android Mobile Application</li>
                     <li>Flutter Mobile Application</li>
                     <li>React Native Mobile Application</li>
                     <li>IOS Mobile Application</li>
                 </ul></li>
     
-                <li>For Web Application it's Applicable on: <ul>
+                <li>For Web Application integration it's Applicable on: <ul>
                     <li>Angular.js Web Application</li>
                     <li>React.js Web Application </li>
                     <li>Django Web Application </li>
                     <li>Vue.js Web Application </li>
                     <li>Next.js Web Application </li>
                     <li>PHP Laravel Web Application </li>
-                    <li>Vanilla Web Application </li>
-                    <li>Java Spring Web Application </li>
                     
                 </ul></li>  <br>
-                <li> <span style="font-weight: bold;">JobsAPI254</span> is owned and regulated by <span style="font-weight: bold;">Shimmita Douglas </span> Full Stack Mobile (Android JetpakCompose, ReactNative,Flutter) and Web Application developer (MERN Stack).
+                <li> <span style="font-weight: bold;">JobWave</span> is owned and regulated by <span style="font-weight: bold;">Shimmita Douglas </span> FullStack Software Developer(Mobile App and Web App)
                      <ul>
                     <li><a href="tel:+254757450727" style="text-decoration: none; color: blue;font-weight: bold;">Phone Number</a></li>   
                     <li><a href="mailto:shimitadouglas@gmail.com,shimmiandev@outlook.com,douglasshimita3@gmail.com" style="text-decoration: none; color: blue; font-weight: bold;"">Email Me</a></li> 
@@ -114,17 +111,15 @@ const handleUserRegistration = async (req, res) => {
     //user email sent successfuly
     console.log("email verication has been sent to " + recipientEmail);
   } catch (error) {
-  
     //
-    var error_data=`${error.message}`
+    var error_data = `${error.message}`;
 
     if (error_data.includes("nodemailer")) {
       //log eror nodemailer
       console.log("error nodemailer: " + error_data);
 
       await res.status(400).send({
-        message:
-          "encountered error while sending email to " + recipientEmail,
+        message: "encountered error while sending email to " + recipientEmail,
       });
     } else if (error_data.includes("email")) {
       //log eror email exist
