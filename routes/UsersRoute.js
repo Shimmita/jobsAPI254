@@ -4,7 +4,12 @@ const usersRoute = express.Router();
 const {
   handleGetJobs,
   handleUserRegistration,
+  handleLoginUser,
 } = require("../controller/UsersController");
+
+
+//POST handle user login
+usersRoute.post("/loginUser",handleLoginUser)
 
 // POST handle user registration
 usersRoute.post("/createUser", handleUserRegistration);

@@ -3,6 +3,7 @@ const JobSchema = require("../model/Job");
 const UserSchema = require("../model/User");
 const nodemailer = require("nodemailer");
 const User = require("../model/User");
+const bcrypt=require('bcrypt')
 const { emailVerificationRoute } = require("../routes/EmailVerRoute");
 
 //const nodemailer = require("nodejs-nodemailer-outlook");
@@ -20,10 +21,7 @@ const handleUserRegistration = async (req, res) => {
   //URL for emal verific= PARENT_URL/BaseURl/verifyEmail/:EMAIL_ID}
   var urlVerificationLink = `${process.env.PARENT_URL}${process.env.BASE_ROUTE}/verifyEmail/${recipientEmail}`;
 
-  var sent_message = `User registration successful
-  email verification message sent to ${req.body.email} 
-  click verify button to verify your account.
-  Check in the email spam folder incase the email is not found in the inbox.`;
+  var sent_message = `User registration successfulemail verification message sent to ${req.body.email} click verify button to verify your account.Check the spam folder incase the email is not found in the inbox.`;
 
   var html = `
       <div style="display: flex;justify-content: center;align-items: center;">
@@ -169,6 +167,54 @@ const handleUserRegistration = async (req, res) => {
   //
 };
 
+//LOGIN user
+const handleLoginUser = async (req, res) => {
+  //extract email from the incoming body object
+  var userBody=await req.body
+  
+  var email=userBody.email
+  var password=userBody.password
+  //clg user object
+  console.log(req.body)
+
+  try {
+    var user= await User.findOne({email})
+    //clg user
+
+    if(user)
+    {
+      //email exists verify the password
+      if(await bcrypt.compare(password, user.password))
+      {
+        //user is valid login successful res the client with the current user
+        await res.status(200).json({
+          data:user,
+          message:'login successful'
+        })
+      }
+      else{
+        //failed incorrect password
+        throw new Error('incorrect password. provide a valid password')
+      }
+    }
+    else{
+      //user not found with that email
+      throw new Error('incorrect email. provide a registered email!')
+    }
+  } catch (error) {
+    
+    //log the error
+    console.log(error.message)
+
+    //respond to the client
+    await res.status(400).send({
+      message:error.message
+    })
+  }
+  
+
+};
+
 //GET request handler retrieve whole jobs from the database
 const handleGetJobs = async (req, res) => {
   //extract key value from the url
@@ -204,4 +250,4 @@ const handleGetJobs = async (req, res) => {
 };
 
 //exporting them
-module.exports = { handleGetJobs, handleUserRegistration };
+module.exports = { handleGetJobs, handleUserRegistration, handleLoginUser };
