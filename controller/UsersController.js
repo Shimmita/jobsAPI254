@@ -11,7 +11,7 @@ const handleUserRegistration = async (req, res) => {
   //saving to the database
   const recipientEmail = req.body.email;
   const user = req.body;
-
+  console.log(user);
   var imageLogoLink =
     "https://digitallearning.eletsonline.com/wp-content/uploads/2016/10/7-million-jobs-can-disappear-by-2050-Study.jpg";
   var imageLinkAlternative =
@@ -98,59 +98,88 @@ const handleUserRegistration = async (req, res) => {
     html: html,
   };
 
-  //sending the email verification message to the recipient
-  nodemailerTransport.sendMail(nodemailerOptions, async (error, info) => {
-    if (error) {
-      console.log("error nodemailer " + error.message);
-      res.status(400).json({
-        message: `error occured ${error.message}`,
+  //save the user to the database using mongoDB and then triger nodemailer to send  the email to the recipient
+
+  try {
+    user = await UserSchema.create(user);
+    //saving user to the database
+    await res.status(200).json({
+      data: user,
+      message: sent_message,
+    });
+
+    console.log("user saved successfully:\n" + user);
+    //triger nodemailer to send email
+    await nodemailerTransport.sendMail(nodemailerOptions);
+    //user email sent successfuly
+    console.log("email verication has been sent to " + recipientEmail);
+  } catch (error) {
+    let error_data = `${error.message}`;
+
+    //log main error message
+    console.log("Error: " + error_data);
+
+    if (error_data.includes("nodemailer")) {
+      //log eror nodemailer
+      console.log("error nodemailer: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message:
+          "nodemailer encountered while sending email to " + recipientEmail,
+      });
+    } else if (error_data.includes("email")) {
+      //log eror email exist
+      console.log("error email exists: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message: `email ${recipientEmail} already in use try onother email!`,
+      });
+    } else if (error_data.includes("name")) {
+      //log eror name exist
+      console.log("error name exists: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message:
+          "a user with the same name already exists, use a different name!",
+      });
+    } else if (error_data.includes("phone")) {
+      //log eror phone exist
+      console.log("error phone exists: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message: "phone number already exists, use a different one!",
+      });
+    } else if (error_data.includes("github")) {
+      //log eror github exist
+      console.log("error github exists: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message: "github account already exists, use a different one!",
+      });
+    } else if (error_data.includes("linkedin")) {
+      //log eror linkedin exist
+      console.log("error linkedin exists: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message: "linkedin account already exists, use a different one!",
       });
     } else {
-      try {
-        user = await UserSchema.create(user);
-        //saving user to the database
-        await res.status(200).json({
-          data: user,
-          message: sent_message,
-        });
-        console.log("user saved successfully:\n" + user);
-      } catch (error) {
-        var error_data = `${error.message}`;
-        if (error_data.includes("email")) {
-          await res.status(400).json({
-            data: user,
-            message: `email ${recipientEmail} already in use try onother email!`,
-          });
-        } else if (error_data.includes("name")) {
-          await res.status(400).json({
-            data: user,
-            message:
-              "a user with the same name already exists, use a different name!",
-          });
-        } else if (error_data.includes("phone")) {
-          await res.status(400).json({
-            data: user,
-            message: "phone number already exists, use a different one!",
-          });
-        } else if (error_data.includes("github")) {
-          await res.status(400).json({
-            data: user,
-            message: "github account already exists, use a different one!",
-          });
-        } else if (error_data.includes("linkedin")) {
-          await res.status(400).json({
-            data: user,
-            message: "linkedin account already exists, use a different one!",
-          });
-        } else
-          await res.status(400).json({
-            data: user,
-            message: error.message,
-          });
-      }
-      //
+      //log eror email exist
+      console.log("error general: " + error_data);
+
+      await res.status(400).json({
+        data: user,
+        message: error_data,
+      });
     }
-  });
+  }
+  //
 };
 
 //GET request handler retrieve whole jobs from the database
@@ -166,7 +195,7 @@ const handleGetJobs = async (req, res) => {
     //key is invalid since result is undefined/ null by the result object
     console.log(error_statement);
     res.status(400).json({
-      data:{},
+      data: {},
       message: error_statement,
     });
   } else {
@@ -180,6 +209,7 @@ const handleGetJobs = async (req, res) => {
     } else {
       //the key invalid
       await res.status(400).json({
+        data: {},
         message: error_statement,
       });
     }
