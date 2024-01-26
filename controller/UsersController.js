@@ -10,7 +10,7 @@ const { emailVerificationRoute } = require("../routes/EmailVerRoute");
 const handleUserRegistration = async (req, res) => {
   //saving to the database
   const recipientEmail = req.body.email;
-  const user = req.body;
+  var user = req.body;
   console.log(user);
   var imageLogoLink =
     "https://digitallearning.eletsonline.com/wp-content/uploads/2016/10/7-million-jobs-can-disappear-by-2050-Study.jpg";
@@ -114,34 +114,30 @@ const handleUserRegistration = async (req, res) => {
     //user email sent successfuly
     console.log("email verication has been sent to " + recipientEmail);
   } catch (error) {
-    let error_data = `${error.message}`;
-
-    //log main error message
-    console.log("Error: " + error_data);
+  
+    //
+    var error_data=`${error.message}`
 
     if (error_data.includes("nodemailer")) {
       //log eror nodemailer
       console.log("error nodemailer: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message:
-          "nodemailer encountered while sending email to " + recipientEmail,
+          "encountered error while sending email to " + recipientEmail,
       });
     } else if (error_data.includes("email")) {
       //log eror email exist
       console.log("error email exists: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message: `email ${recipientEmail} already in use try onother email!`,
       });
     } else if (error_data.includes("name")) {
       //log eror name exist
       console.log("error name exists: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message:
           "a user with the same name already exists, use a different name!",
       });
@@ -149,32 +145,28 @@ const handleUserRegistration = async (req, res) => {
       //log eror phone exist
       console.log("error phone exists: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message: "phone number already exists, use a different one!",
       });
     } else if (error_data.includes("github")) {
       //log eror github exist
       console.log("error github exists: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message: "github account already exists, use a different one!",
       });
     } else if (error_data.includes("linkedin")) {
       //log eror linkedin exist
       console.log("error linkedin exists: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message: "linkedin account already exists, use a different one!",
       });
     } else {
       //log eror email exist
       console.log("error general: " + error_data);
 
-      await res.status(400).json({
-        data: user,
+      await res.status(400).send({
         message: error_data,
       });
     }
